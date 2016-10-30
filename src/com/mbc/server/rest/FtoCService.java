@@ -1,4 +1,4 @@
-package com.mbc.server.sample;
+package com.mbc.server.rest;
 
 /**
  * @author Crunchify
