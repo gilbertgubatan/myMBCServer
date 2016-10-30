@@ -8,9 +8,9 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 
 import com.mbc.server.util.ObjectUtil;
 
@@ -38,20 +38,30 @@ public class DBUtil {
 		return this.cb;
 	}
 	
-	public <T> EntityType<T> getEntityType(Class<T> clazz) {
-		Metamodel metamodel = this.em.getMetamodel();
-	    return metamodel.entity(clazz);
+	public <T> T getEntityByColumnValue(Class<T> clazz, String columnName, Object columnValue) {
+		CriteriaQuery<T> cq = this.cb.createQuery(clazz);
+		Root<T> rootEntity = cq.from(clazz);
+		cq.select(rootEntity);
+		
+		Path<Object> pathEntity = rootEntity.get(columnName);
+		Predicate prColumnValue = this.cb.equal(pathEntity, columnValue);
+		
+		cq.where(prColumnValue);
+		
+		TypedQuery<T> tqEntity = this.em.createQuery(cq);
+		
+		return getOneEntity(tqEntity);
 	}
 	
 	public <T> List<T> getAllEntityList(Class<T> clazz) {
 		CriteriaQuery<T> cq = this.cb.createQuery(clazz);
-		Root<T> rootUser = cq.from(clazz);
-		cq.select(rootUser);
+		Root<T> rootEntity = cq.from(clazz);
+		cq.select(rootEntity);
 		
-		TypedQuery<T> tqUser = this.em.createQuery(cq);
+		TypedQuery<T> tqEntity = this.em.createQuery(cq);
 		
-		if (ObjectUtil.isNotNull(tqUser)) {
-			return tqUser.getResultList();
+		if (ObjectUtil.isNotNull(tqEntity)) {
+			return tqEntity.getResultList();
 		} else {
 			return null; 
 		}
