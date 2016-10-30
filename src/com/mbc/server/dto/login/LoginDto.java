@@ -1,9 +1,9 @@
-package com.mbc.server.dto.user;
+package com.mbc.server.dto.login;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class UserDto {
+public class LoginDto {
 
 	private String userName;
 	private String maskedPassword;

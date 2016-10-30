@@ -1,4 +1,4 @@
-package com.mbc.server.jpa.beans.user;
+package com.mbc.server.jpa.beans.login;
 
 import java.io.Serializable;
 
