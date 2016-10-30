@@ -1,5 +1,6 @@
 package com.mbc.server.rest.login;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,6 +24,7 @@ public class LoginRestService {
 	}
 	
 	@POST
+	@Consumes("application/json")
 	@Produces("application/json")
 	public LoginDto login(LoginDto loginDto) {
 		return LoginFactory.login(loginDto, loginDBService.login(loginDto));
