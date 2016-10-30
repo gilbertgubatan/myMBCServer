@@ -6,7 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LoginDto {
 
 	private String userName;
-	private String maskedPassword;
+	private String password;
+	private Integer responseCode;
 	
 	public String getUserName() {
 		return userName;
@@ -14,11 +15,17 @@ public class LoginDto {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getMaskedPassword() {
-		return maskedPassword;
+	public String getPassword() {
+		return password;
 	}
-	public void setMaskedPassword(String maskedPassword) {
-		this.maskedPassword = maskedPassword;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Integer getResponseCode() {
+		return responseCode;
+	}
+	public void setResponseCode(Integer responseCode) {
+		this.responseCode = responseCode;
 	}
 	
 }

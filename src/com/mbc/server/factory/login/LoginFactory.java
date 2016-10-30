@@ -11,7 +11,28 @@ public class LoginFactory {
 		
 		if (ObjectUtil.isNotNull(user)) {
 			loginDto.setUserName(user.getUserName());
-			loginDto.setMaskedPassword(user.getPassword());
+			loginDto.setPassword(user.getPassword());
+			loginDto.setResponseCode(1);
+		} else {
+			loginDto.setResponseCode(-1);
+		}
+		
+		return loginDto;
+	}
+	
+	public static LoginDto login(LoginDto loginDtoInput, User user) {
+		LoginDto loginDto = new LoginDto();
+		
+		if (ObjectUtil.isNotNull(user)) {
+			if (loginDtoInput.getPassword().equals(user.getPassword())) {
+				loginDto.setUserName(user.getUserName());
+				loginDto.setPassword(user.getPassword());
+				loginDto.setResponseCode(1);
+			} else {
+				loginDto.setResponseCode(0);
+			}
+		}  else {
+			loginDto.setResponseCode(-1);
 		}
 		
 		return loginDto;

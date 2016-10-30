@@ -1,6 +1,7 @@
 package com.mbc.server.rest.login;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,8 +18,14 @@ public class LoginRestService {
 	@Path("{userName}")
 	@GET
 	@Produces("application/json")
-	public LoginDto convertCtoFfromInput(@PathParam("userName") String userName) {
+	public LoginDto getUserByUserName(@PathParam("userName") String userName) {
 		return LoginFactory.convertUserToLoginDto(loginDBService.getUserByUserName(userName));
+	}
+	
+	@POST
+	@Produces("application/json")
+	public LoginDto login(LoginDto loginDto) {
+		return LoginFactory.login(loginDto, loginDBService.login(loginDto));
 	}
 	
 }
