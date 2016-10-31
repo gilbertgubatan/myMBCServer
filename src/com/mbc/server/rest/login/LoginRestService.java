@@ -8,7 +8,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
 import com.mbc.server.database.service.login.LoginDBService;
 import com.mbc.server.dto.login.LoginDto;
@@ -53,9 +52,8 @@ public class LoginRestService {
 	@DELETE
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response deleteUser(LoginDto loginDto) {
-		loginDBService.deleteUser(loginDto);
-		return Response.ok().build();
+	public LoginDto deleteUser(LoginDto loginDto) {
+		return LoginFactory.convertUserToLoginDto(loginDBService.deleteUser(loginDto));
 	}
 	
 }

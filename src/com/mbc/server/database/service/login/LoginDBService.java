@@ -38,9 +38,10 @@ public class LoginDBService {
 		return (User) dbUtil.endUpdateEntity(user);
 	}
 	
-	public void deleteUser(LoginDto loginDto) {
+	public User deleteUser(LoginDto loginDto) {
 		User user = dbUtil.getEntityByColumnValue(User.class, "userName", loginDto.getUserName());
 		dbUtil.deleteEntity(User.class, user.getId());
+		return dbUtil.getEntityByColumnValue(User.class, "id", user.getId());
 	}
 	
 	public List<User> getUserList() {
