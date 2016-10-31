@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 
 import com.mbc.server.util.ObjectUtil;
 
@@ -53,6 +54,18 @@ public class DBUtil {
 		return getOneEntity(tqEntity);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T> Object getMaxEntityByColumnValue(Class<T> clazz, String columnName) {
+		CriteriaQuery<T> cq = this.cb.createQuery(clazz);
+		Root<T> rootEntity = cq.from(clazz);
+		
+		cq.select((Selection<? extends T>) this.cb.max(rootEntity.get(columnName)));
+		
+		TypedQuery<T> tqEntity = this.em.createQuery(cq);
+		
+		return tqEntity.getSingleResult();
+	}
+	
 	public <T> List<T> getAllEntityList(Class<T> clazz) {
 		CriteriaQuery<T> cq = this.cb.createQuery(clazz);
 		Root<T> rootEntity = cq.from(clazz);
@@ -77,10 +90,13 @@ public class DBUtil {
         return ObjectUtil.isNull(resultList) || resultList.isEmpty() ? null : resultList.get(0);
     }
 	
-	public <T> void insertEntity(Class<T> clazz) {
+	public <T> T insertEntity(T entity) {
 		this.em.getTransaction().begin();
-		this.em.persist(clazz);
+		this.em.persist(entity);
+		this.em.flush();
 		this.em.getTransaction().commit();
+		
+		return entity;
 	}
 	
 }

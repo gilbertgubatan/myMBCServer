@@ -2,6 +2,7 @@ package com.mbc.server.jpa.beans.login;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -25,7 +27,8 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="user_id_seq", sequenceName="user_id_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
 	@Column(name="\"Id\"")
 	private Integer id;
 
@@ -39,7 +42,7 @@ public class User implements Serializable {
 	private String userName;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumns({@JoinColumn(name="\"RoleId\"", insertable=false, updatable=false)
 		})
 	private Role role;

@@ -1,6 +1,7 @@
 package com.mbc.server.factory.login;
 
 import com.mbc.server.dto.login.LoginDto;
+import com.mbc.server.jpa.beans.login.Role;
 import com.mbc.server.jpa.beans.login.User;
 import com.mbc.server.util.ObjectUtil;
 
@@ -18,6 +19,19 @@ public class LoginFactory {
 		}
 		
 		return loginDto;
+	}
+	
+	public static User convertLoginDtoToUser(LoginDto loginDto, Role role) {
+		User user = new User();
+		
+		if (ObjectUtil.isNotNull(loginDto)) {
+			user.setUserName(loginDto.getUserName());
+			user.setPassword(loginDto.getPassword());
+			user.setRole(role);
+//			user.setRoleId(role.getId());
+		}
+		
+		return user;
 	}
 	
 	public static LoginDto login(LoginDto loginDtoInput, User user) {

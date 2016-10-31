@@ -30,4 +30,12 @@ public class LoginRestService {
 		return LoginFactory.login(loginDto, loginDBService.login(loginDto));
 	}
 	
+	@Path("add")
+	@POST
+	@Consumes("application/json")
+	@Produces("application/json")
+	public LoginDto createNewUser(LoginDto loginDto) {
+		return LoginFactory.convertUserToLoginDto(loginDBService.createNewUser(loginDto));
+	}
+	
 }

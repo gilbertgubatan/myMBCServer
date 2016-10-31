@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.mbc.server.database.util.DBUtil;
 import com.mbc.server.dto.login.LoginDto;
+import com.mbc.server.factory.login.LoginFactory;
+import com.mbc.server.jpa.beans.login.Role;
 import com.mbc.server.jpa.beans.login.User;
 import com.mbc.server.util.ObjectUtil;
 
@@ -21,6 +23,11 @@ public class LoginDBService {
 		} else {
 			return null;
 		}
+	}
+	
+	public User createNewUser(LoginDto loginDto) {
+		Role roleAdmin = dbUtil.getEntityByColumnValue(Role.class, "roleName", "admin");
+		return (User) dbUtil.insertEntity(LoginFactory.convertLoginDtoToUser(loginDto, roleAdmin));
 	}
 	
 	public List<User> getUserList() {
