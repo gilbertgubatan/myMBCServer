@@ -28,7 +28,7 @@ public class LoginFactory {
 			user.setUserName(loginDto.getUserName());
 			user.setPassword(loginDto.getPassword());
 			user.setRole(role);
-//			user.setRoleId(role.getId());
+			user.setRoleId(role.getId());
 		}
 		
 		return user;

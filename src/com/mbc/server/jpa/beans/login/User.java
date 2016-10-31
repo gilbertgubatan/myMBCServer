@@ -2,14 +2,12 @@ package com.mbc.server.jpa.beans.login;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -42,9 +40,8 @@ public class User implements Serializable {
 	private String userName;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumns({@JoinColumn(name="\"RoleId\"", insertable=false, updatable=false)
-		})
+	@ManyToOne
+	@JoinColumn(name="\"RoleId\"", insertable=false, updatable=false)
 	private Role role;
 
 	public User() {
