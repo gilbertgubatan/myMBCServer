@@ -30,6 +30,19 @@ public class LoginDBService {
 		return (User) dbUtil.insertEntity(LoginFactory.convertLoginDtoToUser(loginDto, roleAdmin));
 	}
 	
+	public User updateUser(LoginDto loginDto) {
+		User user = dbUtil.getEntityByColumnValue(User.class, "userName", loginDto.getUserName());
+		user = (User) dbUtil.getEntityToUpdateByPrimaryKey(User.class, user.getId());
+		user.setPassword(loginDto.getPassword());
+		
+		return (User) dbUtil.endUpdateEntity(user);
+	}
+	
+	public void deleteUser(LoginDto loginDto) {
+		User user = dbUtil.getEntityByColumnValue(User.class, "userName", loginDto.getUserName());
+		dbUtil.deleteEntity(User.class, user.getId());
+	}
+	
 	public List<User> getUserList() {
 		return dbUtil.getAllEntityList(User.class);
 	}

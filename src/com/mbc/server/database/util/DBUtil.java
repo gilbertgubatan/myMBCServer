@@ -39,6 +39,10 @@ public class DBUtil {
 		return this.cb;
 	}
 	
+	public <T> Object getEntityByPrimaryKey(Class<T> entity, Object primaryKey) {
+		return em.find(entity, primaryKey);
+	}
+	
 	public <T> T getEntityByColumnValue(Class<T> clazz, String columnName, Object columnValue) {
 		CriteriaQuery<T> cq = this.cb.createQuery(clazz);
 		Root<T> rootEntity = cq.from(clazz);
@@ -97,6 +101,30 @@ public class DBUtil {
 		this.em.getTransaction().commit();
 		
 		return entity;
+	}
+	
+	public <T> Object getEntityToUpdateByPrimaryKey(Class<T> entity, Object primaryKey) {
+		Object objectReturn = em.find(entity, primaryKey);
+		
+		em.getTransaction().begin();
+		
+		return objectReturn;
+	}
+	
+	public Object endUpdateEntity(Object updatedObject) {
+		em.flush();
+		em.getTransaction().commit();
+		
+		return updatedObject;
+	}
+	
+	public <T> void deleteEntity(Class<T> entity, Object primaryKey) {
+		Object objectToDelete = em.find(entity, primaryKey);
+		
+		em.getTransaction().begin();
+		em.remove(objectToDelete);
+		em.flush();
+		em.getTransaction().commit();
 	}
 	
 }
