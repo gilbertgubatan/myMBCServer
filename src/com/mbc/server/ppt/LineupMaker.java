@@ -7,23 +7,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 
+import com.mbc.server.util.ConfigUtil;
 import com.mbc.server.util.FileUtil;
 import com.mbc.server.util.StringUtil;
 
 public class LineupMaker {
 	
+	private static final String lineupConfigName = "lineup.properties";
+	private static final String folderInputKey = "pptFolderInput";
+	private static final String folderOutputKey = "pptFolderOutput";
+	private static final String pptExtensionKey = "pptExtension";
+	private static final HashMap<String, String> lineupConfig = ConfigUtil.getKeyValueHashMap(lineupConfigName);
 	private static final String[] songList = {"IT'S CHRISTMAS", "LAY IT DOWN", "JESUS AT THE CENTER", "TO YOU BE THE GLORY"};
 
 	public static void main(String[] args) {
-		String folderInput = "C:/Users/IBM_ADMIN/Desktop/OneDrive-2016-11-24";
-		String folderOutput = "C:/Users/IBM_ADMIN/Desktop/OneDrive-2016-11-24/Merged/Merged.pptx";
-		
-		createLineupPPT(Arrays.asList(songList), folderInput, folderOutput);
+		createLineupPPT(Arrays.asList(songList), lineupConfig.get(folderInputKey), lineupConfig.get(folderOutputKey));
 	}
 	
 	public static void createLineupPPT(List<String> songList, String folderInput, String folderOutput) {
@@ -41,7 +45,7 @@ public class LineupMaker {
 					
 					System.out.println("File: " + file.getAbsolutePath());
 					
-					String pptFileName = FileUtil.getFileNameOnly(file.getAbsolutePath(), ".pptx");
+					String pptFileName = FileUtil.getFileNameOnly(file.getAbsolutePath(), lineupConfig.get(pptExtensionKey));
 					
 					if (StringUtil.isNotEmptyOrNull(pptFileName) && songList.contains(pptFileName)) {
 						songPptExistingIndexList.add(songList.indexOf(pptFileName));
