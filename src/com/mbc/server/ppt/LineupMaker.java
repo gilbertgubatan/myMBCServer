@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class LineupMaker {
 			if (folder.isDirectory()) {
 				File[] fileList = folder.listFiles();
 				
+				List<Integer> songPptExistingIndexList = new ArrayList<Integer>();
+				
 				for (int i = 0; i < fileList.length; i++) {
 					File file = fileList[i];
 					
@@ -40,6 +43,8 @@ public class LineupMaker {
 					String pptFileName = getFileNameOnly(file.getAbsolutePath(), ".pptx");
 					
 					if (StringUtil.isNotEmptyOrNull(pptFileName) && songList.contains(pptFileName)) {
+						songPptExistingIndexList.add(songList.indexOf(pptFileName));
+						
 						FileInputStream is = new FileInputStream(file);
 
 						XMLSlideShow src = new XMLSlideShow(is);
@@ -53,10 +58,18 @@ public class LineupMaker {
 					}
 				}
 				
-				FileOutputStream out = new FileOutputStream(folderOutput);
+				for (int i = 0; i < songList.size(); i++) {
+					if (!songPptExistingIndexList.contains(i)) {
+						System.out.println("Song \"" + songList.get(i) + "\"  has no Powerpoint Presentation yet.");
+					}
+				}
 				
-				ppt.write(out);
-				out.close();
+				if (songPptExistingIndexList.size() == songList.size()) {
+					FileOutputStream out = new FileOutputStream(folderOutput);
+					
+					ppt.write(out);
+					out.close();
+				}
 			}
 			
 			ppt.close();
