@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 
+import com.mbc.server.util.FileUtil;
 import com.mbc.server.util.StringUtil;
 
 public class LineupMaker {
@@ -30,7 +31,7 @@ public class LineupMaker {
 			File folder = new File(folderInput);
 			XMLSlideShow ppt = new XMLSlideShow();
 			
-			if (folder.isDirectory()) {
+			if (FileUtil.isDirectory(folderInput)) {
 				File[] fileList = folder.listFiles();
 				
 				List<Integer> songPptExistingIndexList = new ArrayList<Integer>();
@@ -40,7 +41,7 @@ public class LineupMaker {
 					
 					System.out.println("File: " + file.getAbsolutePath());
 					
-					String pptFileName = getFileNameOnly(file.getAbsolutePath(), ".pptx");
+					String pptFileName = FileUtil.getFileNameOnly(file.getAbsolutePath(), ".pptx");
 					
 					if (StringUtil.isNotEmptyOrNull(pptFileName) && songList.contains(pptFileName)) {
 						songPptExistingIndexList.add(songList.indexOf(pptFileName));
@@ -80,56 +81,4 @@ public class LineupMaker {
 		}
 	}
 	
-	private static String getFileNameWithExtension(String fullPath) {
-		String fileName = null;
-		
-		if (StringUtil.isNotEmptyOrNull(fullPath) && new File(fullPath).isFile()) {
-			int fileSeparatorindex = fullPath.lastIndexOf(File.separator);
-			fileName = fullPath.substring(fileSeparatorindex + 1);
-		}
-		
-		return fileName;
-	}
-	
-	private static String getFileNameWithExtension(String fullPath, String extension) {
-		String fileName = null;
-		
-		if (StringUtil.isNotEmptyOrNull(fullPath) && new File(fullPath).isFile() && fullPath.endsWith(extension)) {
-			int fileSeparatorindex = fullPath.lastIndexOf(File.separator);
-			fileName = fullPath.substring(fileSeparatorindex + 1);
-		}
-		
-		return fileName;
-	}
-	
-	private static String getFileNameOnly(String fullPath) {
-		String fileName = null;
-		
-		if (StringUtil.isNotEmptyOrNull(fullPath) && new File(fullPath).isFile()) {
-			int fileSeparatorindex = fullPath.lastIndexOf(File.separator);
-			fileName = fullPath.substring(fileSeparatorindex + 1);
-			
-			int dotIndex = fileName.lastIndexOf(".");
-			fileName = fileName.substring(0, dotIndex);
-		}
-		
-		return fileName;
-	}
-	
-	private static String getFileNameOnly(String fullPath, String extension) {
-		String fileName = null;
-		
-		if (StringUtil.isNotEmptyOrNull(fullPath) && new File(fullPath).isFile() && fullPath.endsWith(extension)) {
-			int fileSeparatorindex = fullPath.lastIndexOf(File.separator);
-			fileName = fullPath.substring(fileSeparatorindex + 1);
-			
-			int dotIndex = fileName.lastIndexOf(".");
-			fileName = fileName.substring(0, dotIndex);
-			
-			System.out.println("fileName: " + fileName);
-		}
-		
-		return fileName;
-	}
-
 }
